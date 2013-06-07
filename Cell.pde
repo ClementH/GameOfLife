@@ -8,6 +8,7 @@ class Cell {
   public PVector position;
   public float state;
   public int age;
+  public int lifespan;
   
   // Each cell has some neighbors
   public ArrayList<Cell> neighbors;
@@ -17,6 +18,7 @@ class Cell {
     position = new PVector(0, 0);
     state = 0;
     age = 0;
+    lifespan = floor(random(40, 100));
   }
   
   public Cell clone() {
@@ -25,6 +27,7 @@ class Cell {
     clone.position = new PVector(position.x, position.y);
     clone.state = state;
     clone.age = age;
+    clone.lifespan = lifespan;
     return clone;
   }
   
@@ -40,6 +43,12 @@ class Cell {
   public Cell evolve() {
     Cell newCell = clone();
     
+    if(newCell.isDead()){
+      lifespan = floor(random(40, 100));
+      newCell.age = 0;
+    }else{
+      newCell.age++;
+    }
     
     int nbAlive = 0;
     int nbDead = 0;
@@ -64,17 +73,13 @@ class Cell {
          newCell.state = 0; 
       }
       
-      // If it is 100 yo, it die
-      if(newCell.age >= 100){
+      // If it is 80 yo, it die
+      if(newCell.age >= newCell.lifespan){
          newCell.state = 0; 
       }
     }
     
-    if(newCell.isDead()){
-      newCell.age = 0;
-    }else{
-      newCell.age++;
-    }
+ 
     return newCell;
   }
   

@@ -4,15 +4,13 @@ int baseFrameRate = 60;
 boolean play;
 
 World world;
-int cellSize = 10;
+int cellSize = 16;
 int evolveSpeed = 10;
 
 // Init method
 void setup() {
   frameRate(60);
-  size(480, 340, P2D);
-  background(20);
-  orientation(LANDSCAPE);
+  size(1024, 768, P2D);
   
   world = new World(width/cellSize,height/cellSize);
   pause();
@@ -21,6 +19,7 @@ void setup() {
 
 // Main loop
 void draw () {
+  background(50);
   // Evolve an display the world
   if(play){
     world.update();  
@@ -43,16 +42,11 @@ void draw () {
 }
 
 void mouseDragged() {
-  // On pause, we can edit the world
-  if( !play && (mouseX>0) && (mouseX<width) && (mouseY>0) && (mouseY<height)){
-    if( mouseButton == LEFT ){
-      world.newCells[mouseY/cellSize][mouseX/cellSize].state=1;
-    }else{
-      world.newCells[mouseY/cellSize][mouseX/cellSize].state=0;
-    }
-  }
+  editWorld();
 }
-
+void mouseReleased(){
+  editWorld();
+}
 void keyPressed() {
   // Play/Pause by pressing SPACE
   if (key == ' ' && play) {
@@ -61,6 +55,17 @@ void keyPressed() {
     play();
   } 
  
+}
+
+private void editWorld(){
+    // On pause, we can edit the world
+  if( !play && (mouseX>0) && (mouseX<width) && (mouseY>0) && (mouseY<height)){
+    if( mouseButton == LEFT ){
+      world.newCells[mouseY/cellSize][mouseX/cellSize].state=1;
+    }else{
+      world.newCells[mouseY/cellSize][mouseX/cellSize].state=0;
+    }
+  }
 }
 
 void play(){

@@ -100,16 +100,17 @@ class World {
     for (int y = 0; y < h; y++) {
       for (int x = 0; x < w; x++) {
         Cell cell = newCells[y][x];
-        if(!cell.isDead()){
+        if(!cell.isDead()) {
+          float p = ((float)cell.age / (float)cell.lifespan)*100;
+          color c1 = color(100, 255, 100, 255-((p/100)*255) );
           
-          color c = color(255, 204 + cell.age, cell.age*20);
-          fill(c);
-          stroke(100);
-          rect(cell.position.x*(width/w),cell.position.y*(height/h), width/w, height/h);
-        }else{
-          fill(20,20,20);
-          stroke(30,30,30);
-          rect(cell.position.x*(width/w),cell.position.y*(height/h), width/w, height/h);
+          fill(c1);
+          noStroke();
+          rect(cell.position.x*(width/w),cell.position.y*(height/h), (width/w)-1, (height/h)-1);
+        } else {
+          fill(40);
+          noStroke();
+          rect(cell.position.x*(width/w),cell.position.y*(height/h), (width/w)-1, (height/h)-1);
         }
       }
     }
