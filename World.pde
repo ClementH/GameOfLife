@@ -1,24 +1,24 @@
 // GameOfLife, by Clément Hardouin
 
-class GOLWorld {
+class World {
   
-  GOLCell[][] oldCells;
-  GOLCell[][] newCells;
+  Cell[][] oldCells;
+  Cell[][] newCells;
   int w;
   int h;
   PShape worldShape;
 
-  GOLWorld(int worldWidth, int worldHeight) {
+  World(int worldWidth, int worldHeight) {
     
     w = worldWidth;
     h = worldHeight;
     
-    oldCells = new GOLCell[h][w];
-    newCells = new GOLCell[h][w];
+    oldCells = new Cell[h][w];
+    newCells = new Cell[h][w];
   
     for (int y = 0; y < h; y++) {
       for (int x = 0; x < w; x++) {
-        newCells[y][x] = new GOLCell();
+        newCells[y][x] = new Cell();
         newCells[y][x].position = new PVector(x,y);
         if(random(0,1) > 1){
           newCells[y][x].state = 1;
@@ -30,7 +30,7 @@ class GOLWorld {
     
     for (int y = 0; y < h; y++) {
       for (int x = 0; x < w; x++) {
-        updateVoisins(x, y);
+        updateNeighborhood(x, y);
       }
     }
     
@@ -40,7 +40,7 @@ class GOLWorld {
     // TODO : free oldCells ?
     oldCells = newCells;
     
-    newCells = new GOLCell[h][w];
+    newCells = new Cell[h][w];
     
     for (int y = 0; y < h; y++) {
       for (int x = 0; x < w; x++) {
@@ -50,48 +50,48 @@ class GOLWorld {
     
     for (int y = 0; y < h; y++) {
       for (int x = 0; x < w; x++) {
-        updateVoisins(x, y);
+        updateNeighborhood(x, y);
       }
     }
   }
 
-  void updateVoisins(int x, int y){
+  void updateNeighborhood(int x, int y){
     
     // If x & y are in range
     if( (x>=0) && (x<w) && (y>=0) && (y<h) ){
-      GOLCell cell = newCells[y][x];
-      cell.voisins.clear();
+      Cell cell = newCells[y][x];
+      cell.neighbors.clear();
       // left
       if(x > 0){
-        cell.voisins.add(newCells[y][x-1]);
+        cell.neighbors.add(newCells[y][x-1]);
         // bottom left
         if(y > 0){
-          cell.voisins.add(newCells[y-1][x-1]);
+          cell.neighbors.add(newCells[y-1][x-1]);
         }
         // top left
         if(y < h-1){
-          cell.voisins.add(newCells[y+1][x-1]);
+          cell.neighbors.add(newCells[y+1][x-1]);
         }
       }
       // right
       if(x < w-1){
-        cell.voisins.add(newCells[y][x+1]);
+        cell.neighbors.add(newCells[y][x+1]);
          // bottom right
         if(y > 0){
-          cell.voisins.add(newCells[y-1][x+1]);
+          cell.neighbors.add(newCells[y-1][x+1]);
         }
         // top right
         if(y < h-1){
-          cell.voisins.add(newCells[y+1][x+1]);
+          cell.neighbors.add(newCells[y+1][x+1]);
         }
       }
       // bottom
       if(y > 0){
-        cell.voisins.add(newCells[y-1][x]);
+        cell.neighbors.add(newCells[y-1][x]);
       }
       // up
       if(y < h-1){
-        cell.voisins.add(newCells[y+1][x]);
+        cell.neighbors.add(newCells[y+1][x]);
       }
     }
   }
@@ -99,15 +99,17 @@ class GOLWorld {
   void display() {
     for (int y = 0; y < h; y++) {
       for (int x = 0; x < w; x++) {
-        GOLCell cell = newCells[y][x];
-        if(cell.state == 1){
-          fill(255, 255, 100);
+        Cell cell = newCells[y][x];
+        if(!cell.isDead()){
+          
+          color c = color(255, 204 + cell.age, cell.age*20);
+          fill(c);
           stroke(100);
-          rect(cell.position.x*10,cell.position.y*10, 10, 10);
+          rect(cell.position.x*(width/w),cell.position.y*(height/h), width/w, height/h);
         }else{
-          fill(20,200);
-          noStroke();
-          rect((cell.position.x*10)+1,(cell.position.y*10)+1, 10, 10);
+          fill(20,20,20);
+          stroke(30,30,30);
+          rect(cell.position.x*(width/w),cell.position.y*(height/h), width/w, height/h);
         }
       }
     }
