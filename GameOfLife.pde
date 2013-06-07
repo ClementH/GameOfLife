@@ -29,10 +29,14 @@ void draw () {
   // Write stuff on screen
   fill(255);
   textSize(12);
-  text("Frame rate: " + int(frameRate), 10, height - 10);
-  text("SPACE : play/pause", 10, 20);
-  text("MOUSE LEFT : rebirth cell", 10, 40);
-  text("MOUSE RIGHT : kill cell", 10, 60);
+  text("Frame rate: " + int(frameRate), 10, height - 10); 
+  if(play){
+    text("SPACE : edit mode", 10, 20);
+  }else{
+    text("SPACE : start", 10, 20);
+    text("MOUSE LEFT : rebirth cell", 10, 40);
+    text("MOUSE RIGHT : kill cell", 10, 60);
+  }
   
   if(play){
     text("(play)", width-50, height - 10);
