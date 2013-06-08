@@ -3,6 +3,8 @@ GameOfLife
 
 Simple Game of life with Processing
 
+You can see a simplified JS version here : http://twib.it/gol
+
 1 ) You need to download Processing here : https://processing.org/download/
 
 2 ) The files need to be put in a folder named 'GameOfLife'.
